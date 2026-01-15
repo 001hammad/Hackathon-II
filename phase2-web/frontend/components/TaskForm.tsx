@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { api } from "@/lib/api/client"
+// import { api } from "@/lib/api/client"
+import { api } from "../lib/api/client"
 import { toast } from "sonner"
 import { Plus } from "lucide-react"
 

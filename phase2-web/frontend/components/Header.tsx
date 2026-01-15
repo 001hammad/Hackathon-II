@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { authClient } from "@/lib/auth-client"
+// import { authClient } from "@/lib/auth-client"
+import { authClient } from "../lib/auth-client"
 import { LogOut, CheckCircle2 } from "lucide-react"
 import { motion } from "framer-motion"
 

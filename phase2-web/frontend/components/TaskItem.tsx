@@ -12,12 +12,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { api, Task } from "@/lib/api/client"
+// import { api, Task } from "@/lib/api/client"
+import { api,Task} from "../lib/api/client"
 import { toast } from "sonner"
 import { Pencil, Trash2, Clock } from "lucide-react"
 import { motion } from "framer-motion"
 import { formatDistanceToNow } from "date-fns"
-import { cn } from "../lib/utils"
+import { cn } from "@/lib/utils"
 
 interface TaskItemProps {
   task: Task
