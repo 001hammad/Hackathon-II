@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/app/components/ui/checkbox"
+import { Button } from "@/app/components/ui/button"
+import { Input } from "@/app/components/ui/input"
 import {
   Dialog,
   DialogContent,
@@ -11,14 +11,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-// import { api, Task } from "@/lib/api/client"
-import { api,Task} from "../lib/api/client"
+} from "@/app/components/ui/dialog"
+import { api, Task } from "@/app/lib/api/client"
 import { toast } from "sonner"
 import { Pencil, Trash2, Clock } from "lucide-react"
 import { motion } from "framer-motion"
 import { formatDistanceToNow } from "date-fns"
-import { cn } from "@/lib/utils"
+import { cn } from "@/app/lib/utils"
 
 interface TaskItemProps {
   task: Task

@@ -1,9 +1,8 @@
 /**
  * Dashboard Layout - Header with logout button
  */
-import { Header } from "@/components/Header"
-// import { auth } from "@/lib/auth"
-import { auth } from "../../lib/auth"
+import { Header } from "@/app/components/Header"
+import { auth } from "@/app/lib/auth"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 

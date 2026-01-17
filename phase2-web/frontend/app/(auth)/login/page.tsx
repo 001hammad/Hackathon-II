@@ -3,10 +3,9 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-// import { authClient } from "@/lib/auth-client"
-import { authClient } from "../../../lib/auth-client"
+import { Button } from "@/app/components/ui/button"
+import { Input } from "@/app/components/ui/input"
+import { authClient } from "@/app/lib/auth-client"
 import { motion } from "framer-motion"
 import { LogIn, Mail, Lock } from "lucide-react"
 

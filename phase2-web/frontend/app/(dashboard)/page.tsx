@@ -1,16 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { TaskForm } from "@/components/TaskForm"
-import { TaskList } from "@/components/TaskList"
-import { TaskStats } from "@/components/TaskStats"
-import { TaskSkeletonList } from "@/components/TaskSkeleton"
-// import { api, Task } from "@/lib/api/client"
-import { api } from "@/lib/api/client"
-import { Task } from "@/lib/api/client"
+import { TaskForm } from "@/app/components/TaskForm"
+import { TaskList } from "@/app/components/TaskList"
+import { TaskStats } from "@/app/components/TaskStats"
+import { TaskSkeletonList } from "@/app/components/TaskSkeleton"
+import { api, Task } from "@/app/lib/api/client"
 import { Search, Filter } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from "@/app/components/ui/input"
+import { Button } from "@/app/components/ui/button"
 
 type FilterType = "all" | "active" | "completed"
 
