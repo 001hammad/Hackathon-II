@@ -1,7 +1,7 @@
 "use client"
 
-import { TaskItem } from "@/components/TaskItem"
-import { Task } from "@/lib/api/client"
+import { TaskItem } from "@/app/components/TaskItem"
+import { Task } from "@/app/lib/api/client"
 import { motion, AnimatePresence } from "framer-motion"
 import { ClipboardList } from "lucide-react"
 

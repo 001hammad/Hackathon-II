@@ -1,8 +1,8 @@
 "use client"
 
-import { Task } from "@/lib/api/client"
+import { Task } from "@/app/lib/api/client"
 import { CheckCircle2, Circle, ListTodo } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn } from "@/app/lib/utils"
 
 interface TaskStatsProps {
   tasks: Task[]
