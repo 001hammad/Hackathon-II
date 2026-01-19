@@ -10,7 +10,7 @@ function requireEnv(name: string): string {
 
 export const auth = betterAuth({
   // Better Auth docs recommend setting baseURL explicitly (do not rely on inference).
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  baseURL: process.env.BETTER_AUTH_URL || "https://hackathon-ii-lyart.vercel.app/",
 
   // Better Auth uses BETTER_AUTH_SECRET/AUTH_SECRET by default, but we set it explicitly.
   secret: requireEnv("BETTER_AUTH_SECRET"),
