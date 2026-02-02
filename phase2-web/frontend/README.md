@@ -26,7 +26,7 @@ Create or update `.env.local` file:
 
 ```bash
 # Backend API URL
-NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_API_URL=https://hammad224-todo-app-backend.hf.space/
 
 # Authentication Secret (MUST match backend)
 BETTER_AUTH_SECRET=your-secure-secret-key-minimum-32-characters
@@ -45,7 +45,7 @@ BETTER_AUTH_SECRET=your-secure-secret-key-minimum-32-characters
 npm run dev
 ```
 
-The app will be available at: **http://localhost:3000**
+The app will be available at: **https://hackathon-ii-lyart.vercel.app/**
 
 ### Build for Production
 
@@ -131,7 +131,7 @@ Type-safe API client with automatic JWT token attachment:
 
 1. **Start backend**: `cd ../backend && uvicorn app.main:app --reload`
 2. **Start frontend**: `npm run dev`
-3. **Open browser**: http://localhost:3000
+3. **Open browser**: https://hackathon-ii-lyart.vercel.app/
 4. **Create account**: Click "Sign up" and enter email/password
 5. **Add tasks**: Use the form to add your first task
 6. **Manage tasks**: Toggle, edit, or delete tasks as needed
@@ -156,18 +156,18 @@ Type-safe API client with automatic JWT token attachment:
 
 - Make sure you're logged in
 - Check that JWT token is in localStorage (DevTools → Application → Local Storage)
-- Verify backend is running on http://localhost:8000
+- Verify backend is accessible at https://hammad224-todo-app-backend.hf.space/
 
 ### CORS errors
 
-- Verify backend CORS is configured for http://localhost:3000
+- Verify backend CORS is configured for https://hackathon-ii-lyart.vercel.app/
 - Check `NEXT_PUBLIC_API_URL` in `.env.local` matches backend URL
 
 ### Tasks not loading
 
 - Check browser console for errors
 - Verify backend is running and accessible
-- Test backend directly at http://localhost:8000/docs
+- Test backend directly at https://hammad224-todo-app-backend.hf.space/docs
 
 ### Build errors
 

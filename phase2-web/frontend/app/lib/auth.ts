@@ -10,7 +10,7 @@ function requireEnv(name: string): string {
 
 export const auth = betterAuth({
   // Better Auth docs recommend setting baseURL explicitly (do not rely on inference).
-  baseURL: process.env.BETTER_AUTH_URL || "https://hackathon-ii-lyart.vercel.app/",
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
 
   // Better Auth uses BETTER_AUTH_SECRET/AUTH_SECRET by default, but we set it explicitly.
   secret: requireEnv("BETTER_AUTH_SECRET"),
@@ -30,6 +30,12 @@ export const auth = betterAuth({
       // Properly configure UUID generation for PostgreSQL
       generateId: "uuid",
     },
+    // Allow the frontend origin to access the auth endpoints
+    allowedOrigins: [
+      process.env.BETTER_AUTH_URL || "http://localhost:3000",
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+    ],
   },
 
   // Must be last plugin per Better Auth docs.
