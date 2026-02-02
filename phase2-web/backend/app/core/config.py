@@ -35,6 +35,7 @@ class Settings:
     CORS_ORIGINS: list[str] = [
         "http://localhost:3000",  # Next.js frontend
         "http://127.0.0.1:3000",
+        "https://hackathon-ii-lyart.vercel.app",  # Production frontend
     ]
 
     def validate(self) -> None:

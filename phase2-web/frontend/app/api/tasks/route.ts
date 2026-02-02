@@ -45,15 +45,20 @@ async function proxyToBackend(request: Request, opts: { method: string; path: st
   const timestamp = Date.now().toString()
   const body = opts.body ?? ""
 
+  // Normalize URL to avoid double slashes
+  const normalizedBase = backendBase.endsWith('/') ? backendBase.slice(0, -1) : backendBase
+  const normalizedPath = opts.path.startsWith('/') ? opts.path : `/${opts.path}`
+  const fullUrl = `${normalizedBase}${normalizedPath}`
+
   const { signature } = signInternalRequest({
     userId,
     timestamp,
     method: opts.method,
-    path: opts.path,
+    path: opts.path,  // Use original path for signature calculation
     body,
   })
 
-  const res = await fetch(`${backendBase}${opts.path}`, {
+  const res = await fetch(fullUrl, {
     method: opts.method,
     headers: {
       "content-type": "application/json",
