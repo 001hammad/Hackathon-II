@@ -1,6 +1,5 @@
 import { betterAuth } from "better-auth"
 import { nextCookies } from "better-auth/next-js"
-import { Pool } from "pg"
 
 function requireEnv(name: string): string {
   const value = process.env[name]
@@ -15,26 +14,17 @@ export const auth = betterAuth({
   // Better Auth uses BETTER_AUTH_SECRET/AUTH_SECRET by default, but we set it explicitly.
   secret: requireEnv("BETTER_AUTH_SECRET"),
 
-  database: new Pool({
-    // Neon pooled connection strings do NOT allow startup parameters like `options=-c search_path=...`.
-    // So we connect directly using DATABASE_URL as-is.
-    connectionString: requireEnv("DATABASE_URL"),
-  }),
-
   emailAndPassword: {
     enabled: true,
   },
 
   advanced: {
-    database: {
-      // Properly configure UUID generation for PostgreSQL
-      generateId: "uuid",
-    },
     // Allow the frontend origin to access the auth endpoints
     allowedOrigins: [
       process.env.BETTER_AUTH_URL || "http://localhost:3000",
       "http://localhost:3000",
       "http://127.0.0.1:3000",
+      "https://hackathon-ii-lyart.vercel.app",  // Production URL
     ],
   },
 

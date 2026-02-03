@@ -9,8 +9,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 export function middleware(request: NextRequest) {
-  // Check for auth token in localStorage (client-side check will be more robust)
-  // For now, we'll redirect unauthenticated users to login
+  // Check for auth token in cookie
   const authToken = request.cookies.get("better-auth.session_token")
 
   const isAuthPage = request.nextUrl.pathname.startsWith("/login") ||
@@ -21,6 +20,10 @@ export function middleware(request: NextRequest) {
 
   // Redirect unauthenticated users from protected pages to login
   if (isProtectedPage && !authToken) {
+    // Don't redirect for API routes
+    if (request.nextUrl.pathname.startsWith('/api/')) {
+      return NextResponse.next()
+    }
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
@@ -33,5 +36,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/dashboard", "/login", "/signup"]
+  matcher: ["/", "/dashboard/:path*", "/login", "/signup", "/api/:path*"]
 }
