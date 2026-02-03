@@ -18,16 +18,6 @@ export const auth = betterAuth({
     enabled: true,
   },
 
-  advanced: {
-    // Allow the frontend origin to access the auth endpoints
-    allowedOrigins: [
-      process.env.BETTER_AUTH_URL || "http://localhost:3000",
-      "http://localhost:3000",
-      "http://127.0.0.1:3000",
-      "https://hackathon-ii-lyart.vercel.app",  // Production URL
-    ],
-  },
-
   // Must be last plugin per Better Auth docs.
   plugins: [nextCookies()],
 })

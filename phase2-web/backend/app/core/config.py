@@ -36,7 +36,6 @@ class Settings:
         "http://localhost:3000",  # Next.js frontend
         "http://127.0.0.1:3000",
         "https://hackathon-ii-lyart.vercel.app",  # Production frontend
-        "https://hammad224-todo-app-backend.hf.space/",  # Backend API
     ]
 
     def validate(self) -> None:
