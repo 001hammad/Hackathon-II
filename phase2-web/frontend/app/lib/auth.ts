@@ -16,7 +16,10 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: false, // Disable for development/testing
   },
+
+  socialProviders: {}, // No social providers needed
 
   // Must be last plugin per Better Auth docs.
   plugins: [nextCookies()],
