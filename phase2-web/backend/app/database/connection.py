@@ -1,4 +1,4 @@
-"""Database connection module for Neon PostgreSQL with SQLModel."""
+"""Database connection module for SQLModel."""
 import os
 from sqlmodel import create_engine, Session
 from dotenv import load_dotenv
@@ -12,14 +12,26 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
 
-# Create SQLModel engine for Neon PostgreSQL
-engine = create_engine(
-    DATABASE_URL,
-    echo=True,  # Set to False in production
-    connect_args={"sslmode": "require"},
-    pool_pre_ping=True,  # Verify connections before use
-    pool_recycle=3600  # Recycle connections every hour
-)
+# Create SQLModel engine
+# Check if it's a SQLite database for different connect_args
+if DATABASE_URL.startswith("sqlite"):
+    # SQLite specific configuration
+    engine = create_engine(
+        DATABASE_URL,
+        echo=True,  # Set to False in production
+        connect_args={"check_same_thread": False},  # Required for SQLite with threading
+    )
+else:
+    # PostgreSQL specific configuration (Neon)
+    # Note: sslmode is already in the DATABASE_URL connection string
+    engine = create_engine(
+        DATABASE_URL,
+        echo=True,  # Set to False in production
+        pool_pre_ping=True,  # Verify connections before use
+        pool_recycle=3600,  # Recycle connections every hour
+        pool_size=5,  # Reduced for Neon's connection limits
+        max_overflow=10,
+    )
 
 
 def get_session():

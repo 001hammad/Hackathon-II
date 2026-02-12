@@ -12,16 +12,12 @@ import hashlib
 import time
 
 from ..core.config import settings
-from ..models.user import User
-from ..database.connection import engine
-from sqlmodel import Session, select
-from datetime import datetime
 
 
 INTERNAL_TIME_SKEW_MS = 5 * 60 * 1000  # 5 minutes
 
 
-async def get_current_user(request: Request) -> UUID:
+async def get_current_user(request: Request):
     """Return authenticated user_id from trusted internal headers.
 
     Expected headers (set by Next.js BFF routes under /api/tasks*):
@@ -40,11 +36,6 @@ async def get_current_user(request: Request) -> UUID:
     signature = request.headers.get("x-internal-signature")
 
     if not user_id or not timestamp or not signature:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
-    try:
-        user_uuid = UUID(user_id)
-    except ValueError:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     try:
@@ -71,37 +62,21 @@ async def get_current_user(request: Request) -> UUID:
         hashlib.sha256,
     ).hexdigest()
 
+    # Debug logging
+    print(f"[AUTH DEBUG] Received signature: {signature}")
+    print(f"[AUTH DEBUG] Expected signature: {expected}")
+    print(f"[AUTH DEBUG] Payload: {payload}")
+    print(f"[AUTH DEBUG] User ID: {user_id}")
+    print(f"[AUTH DEBUG] Timestamp: {timestamp}")
+    print(f"[AUTH DEBUG] Method: {method}")
+    print(f"[AUTH DEBUG] Path: {path}")
+    print(f"[AUTH DEBUG] Body: {body_text}")
+
     if not hmac.compare_digest(expected, signature):
+        print(f"[AUTH DEBUG] Signature mismatch!")
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-    # Ensure user exists in our custom User model
-    # Create a session and check if user exists, create if not
-    try:
-        with Session(engine) as session:
-            existing_user = session.exec(select(User).where(User.id == user_uuid)).first()
-
-            # If user doesn't exist in our custom model, create a minimal entry
-            if not existing_user:
-                # Create a new user with the same UUID from Better Auth
-                from datetime import datetime, timezone
-                now = datetime.now(timezone.utc)
-                new_user = User(
-                    id=user_uuid,
-                    email=f"user_{user_uuid}@better-auth.com",  # Default email
-                    password_hash="",  # Empty since Better Auth handles auth
-                    created_at=now,
-                    updated_at=now
-                )
-                session.add(new_user)
-                session.commit()
-                session.refresh(new_user)  # Refresh to ensure the user is properly saved
-    except Exception as e:
-        # Log the specific error to help with debugging
-        print(f"Error in get_current_user: {str(e)}")
-        print(f"User ID: {user_uuid}")
-        import traceback
-        traceback.print_exc()
-        # Don't fail the authentication, but log the error
-        pass
-
-    return user_uuid
+    # Better Auth uses string IDs, not UUIDs
+    # Return the user_id as-is (it's a string)
+    print(f"[AUTH DEBUG] Authentication successful, returning user_id: {user_id}")
+    return user_id

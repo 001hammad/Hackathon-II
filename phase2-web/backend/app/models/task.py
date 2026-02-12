@@ -1,11 +1,7 @@
 """Task model for todo items."""
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
-from sqlmodel import Field, SQLModel, Relationship
-from uuid import UUID
-
-if TYPE_CHECKING:
-    from .user import User
+from typing import Optional
+from sqlmodel import Field, SQLModel
 
 
 class Task(SQLModel, table=True):
@@ -17,25 +13,21 @@ class Task(SQLModel, table=True):
 
     Attributes:
         id: Unique task identifier (auto-increment integer)
-        user_id: Owner's user ID (foreign key to users.id)
+        user_id: Owner's user ID (string - Better Auth format)
         description: Task description text (max 500 characters)
         completed: Completion status (boolean)
         created_at: Task creation timestamp
         updated_at: Last update timestamp
-        user: Relationship to task owner (many-to-one)
     """
 
     __tablename__ = "tasks"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: UUID = Field(foreign_key="users.id", index=True, nullable=False)
+    user_id: str = Field(index=True, nullable=False, max_length=255)  # Better Auth string ID
     description: str = Field(max_length=500, nullable=False)
     completed: bool = Field(default=False, nullable=False)
-    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-    updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-
-    # Relationships
-    user: Optional["User"] = Relationship(back_populates="tasks")
+    created_at: datetime = Field(default_factory=datetime.now, nullable=False)
+    updated_at: datetime = Field(default_factory=datetime.now, nullable=False)
 
     class Config:
         arbitrary_types_allowed = True

@@ -1,8 +1,7 @@
 """Task CRUD endpoints with user isolation."""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
-from uuid import UUID
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..database.connection import get_session
 from ..models.task import Task
@@ -14,7 +13,7 @@ router = APIRouter(prefix="/api/tasks", tags=["tasks"])
 
 @router.get("/", response_model=dict)
 async def list_tasks(
-    current_user_id: UUID = Depends(get_current_user),
+    current_user_id: str = Depends(get_current_user),
     session: Session = Depends(get_session)
 ):
     """
@@ -32,7 +31,7 @@ async def list_tasks(
 @router.post("/", response_model=TaskResponse, status_code=201)
 async def create_task(
     task_data: TaskCreate,
-    current_user_id: UUID = Depends(get_current_user),
+    current_user_id: str = Depends(get_current_user),
     session: Session = Depends(get_session)
 ):
     """
@@ -41,25 +40,31 @@ async def create_task(
     The user_id is automatically set from the JWT token,
     not from the request body (security).
     """
-    new_task = Task(
-        user_id=current_user_id,
-        description=task_data.description,
-        completed=False,
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
-    )
+    try:
+        new_task = Task(
+            user_id=current_user_id,
+            description=task_data.description,
+            completed=False,
+            created_at=datetime.now(),
+            updated_at=datetime.now()
+        )
 
-    session.add(new_task)
-    session.commit()
-    session.refresh(new_task)
+        session.add(new_task)
+        session.commit()
+        session.refresh(new_task)
 
-    return new_task
+        return new_task
+    except Exception as e:
+        print(f"Error creating task: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error creating task: {str(e)}")
 
 
 @router.get("/{task_id}", response_model=TaskResponse)
 async def get_task(
     task_id: int,
-    current_user_id: UUID = Depends(get_current_user),
+    current_user_id: str = Depends(get_current_user),
     session: Session = Depends(get_session)
 ):
     """
@@ -87,7 +92,7 @@ async def get_task(
 async def update_task(
     task_id: int,
     task_update: TaskUpdate,
-    current_user_id: UUID = Depends(get_current_user),
+    current_user_id: str = Depends(get_current_user),
     session: Session = Depends(get_session)
 ):
     """
@@ -109,7 +114,7 @@ async def update_task(
 
     # Update description
     task.description = task_update.description
-    task.updated_at = datetime.utcnow()
+    task.updated_at = datetime.now()
 
     session.add(task)
     session.commit()
@@ -121,7 +126,7 @@ async def update_task(
 @router.patch("/{task_id}/toggle", response_model=TaskResponse)
 async def toggle_task(
     task_id: int,
-    current_user_id: UUID = Depends(get_current_user),
+    current_user_id: str = Depends(get_current_user),
     session: Session = Depends(get_session)
 ):
     """
@@ -143,7 +148,7 @@ async def toggle_task(
 
     # Toggle completion status
     task.completed = not task.completed
-    task.updated_at = datetime.utcnow()
+    task.updated_at = datetime.now()
 
     session.add(task)
     session.commit()
@@ -155,7 +160,7 @@ async def toggle_task(
 @router.delete("/{task_id}")
 async def delete_task(
     task_id: int,
-    current_user_id: UUID = Depends(get_current_user),
+    current_user_id: str = Depends(get_current_user),
     session: Session = Depends(get_session)
 ):
     """

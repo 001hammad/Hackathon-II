@@ -14,6 +14,7 @@ def create_tables():
         from app.database.init import create_tables
         create_tables()
     """
+    # First, create all tables
     SQLModel.metadata.create_all(bind=engine)
     print("Database tables created successfully")
 

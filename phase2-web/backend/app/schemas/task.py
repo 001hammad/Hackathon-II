@@ -1,6 +1,5 @@
 """Pydantic schemas for task endpoints."""
 from pydantic import BaseModel, Field
-from uuid import UUID
 from datetime import datetime
 from typing import Optional
 
@@ -47,7 +46,7 @@ class TaskResponse(BaseModel):
     """Response schema for task data."""
 
     id: int = Field(..., description="Unique task identifier", example=1)
-    user_id: UUID = Field(..., description="Owner's user ID")
+    user_id: str = Field(..., description="Owner's user ID (Better Auth string ID)")
     description: str = Field(..., description="Task description", max_length=500)
     completed: bool = Field(..., description="Completion status", example=False)
     created_at: datetime = Field(..., description="Task creation timestamp")
@@ -58,7 +57,7 @@ class TaskResponse(BaseModel):
         json_schema_extra = {
             "example": {
                 "id": 1,
-                "user_id": "550e8400-e29b-41d4-a716-446655440000",
+                "user_id": "WcpSybz2Ws4QFxad1mIKHf7Dc39rCvdF",
                 "description": "Buy groceries",
                 "completed": False,
                 "created_at": "2026-01-02T10:00:00Z",
